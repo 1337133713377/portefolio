@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page introuvable | Julien ROULLET</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/assets/avatar.webp">
+  <link rel="stylesheet" href="/style.css">
+  <script>try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+</head>
+<body>
+  <main class="notfound">
+    <div class="notfound__code">404</div>
+    <h1>Cette page n'existe pas.</h1>
+    <pre>&gt; reka open <span id="path"></span>
+erreur : ressource introuvable
+&gt; _</pre>
+    <p class="muted">Le lien est peut-être cassé, ou la page a été déplacée.</p>
+    <p><a class="btn" href="/">Retour à l'accueil</a></p>
+  </main>
+  <script>document.getElementById('path').textContent = location.pathname;</script>
+</body>
+</html>
