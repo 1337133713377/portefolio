@@ -98,10 +98,24 @@ const icon = (name, href, label) => {
   return a;
 };
 
+// Sans compte, l'API GitHub limite chaque visiteur à 60 requêtes par heure (3 par visite ici).
+// Les réponses sont donc gardées 1 h dans le navigateur, et réutilisées si GitHub refuse.
+const CACHE_TTL = 60 * 60 * 1000;
 async function getJSON(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`${r.status} ${url}`);
-  return r.json();
+  const key = 'gh-cache:' + url;
+  let cached = null;
+  try { cached = JSON.parse(localStorage.getItem(key)); } catch (e) {}
+  if (cached && Date.now() - cached.t < CACHE_TTL) return cached.data;
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw Object.assign(new Error(`${r.status} ${url}`), { status: r.status });
+    const data = await r.json();
+    try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), data })); } catch (e) {}
+    return data;
+  } catch (e) {
+    if (cached) return cached.data; // périmé, mais mieux que rien
+    throw e;
+  }
 }
 
 async function loadGitHub() {
@@ -115,7 +129,13 @@ async function loadGitHub() {
     ]);
   } catch (e) {
     console.error(e);
-    $('#project-list').replaceChildren(el('p', { className: 'muted', textContent: `Impossible de charger le profil GitHub « ${GITHUB_USER} ».` }));
+    const limited = e.status === 403 || e.status === 429;
+    $('#project-list').replaceChildren(el('p', { className: 'muted' },
+      limited ? 'GitHub limite temporairement le nombre de requêtes. Réessaie dans quelques minutes, ou ' : 'Les projets ne peuvent pas être chargés pour le moment. ',
+      el('a', { href: profileUrl + '?tab=repositories', target: '_blank', rel: 'noopener', className: 'accent', textContent: limited ? 'vois-les directement sur GitHub ›' : 'Voir mes projets sur GitHub ›' })));
+    $('#stack').hidden = true;
+    $('#socials').replaceChildren(icon('github', profileUrl, 'GitHub'));
+    $('#contact-actions').replaceChildren(el('a', { className: 'btn', href: profileUrl, target: '_blank', rel: 'noopener', textContent: 'Mon GitHub ›' }));
     return;
   }
 
