@@ -7,7 +7,7 @@ Les projets, les langages, les statistiques et le graphe de contributions sont c
 
 ## Voir en local
 
-```bash
+```bash 
 python3 -m http.server 8000
 ```
 
