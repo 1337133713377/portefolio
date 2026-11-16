@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Julien ROULLET | Portfolio</title>
+  <meta name="description" content="Julien ROULLET, étudiant à Epitech Paris et créateur de REKA, la console de mixage tout-en-un pour Windows.">
+  <link rel="icon" href="assets/avatar.webp">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // set theme before paint to avoid a flash
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a href="#top" class="nav__logo" id="logo">JR</a>
+      <nav class="nav__links">
+        <a href="#reka">REKA</a>
+        <a href="#projects">Projets</a>
+        <a href="#stack">Stack</a>
+        <a href="#activity">Activité</a>
+        <a href="#contact">Contact</a>
+        <span class="nav__sep" aria-hidden="true"></span>
+        <button class="icon-btn" id="theme-toggle" aria-label="Changer de thème">
+          <svg class="i-sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+    <!-- HERO -->
+    <section class="hero reveal">
+      <div class="hero__id">
+        <div class="pixel-card" id="pixel-card" tabindex="0" role="button"
+             aria-label="Survoler pour révéler la photo de profil" aria-pressed="false">
+          <img class="pixel-card__default" src="assets/avatar.webp" alt="Avatar illustré">
+          <img class="pixel-card__active" src="assets/photo.webp" alt="Photo de profil">
+          <div class="pixel-card__pixels" aria-hidden="true"></div>
+          <div class="pixel-card__hint" aria-hidden="true">Survoler pour révéler</div>
+        </div>
+        <div>
+          <h1 class="hero__name">
+            <span id="name">Julien ROULLET</span>
+            <svg class="verified" viewBox="0 0 24 24" width="22" height="22" aria-label="Vérifié"><path fill="currentColor" d="M22.5 12.5c0-1.58-.88-2.95-2.18-3.65.15-.44.23-.91.23-1.4 0-2.21-1.71-4-3.82-4-.47 0-.92.08-1.34.25C14.77 2.38 13.5 1.5 12 1.5s-2.77.88-3.39 2.2a3.6 3.6 0 0 0-1.34-.25c-2.11 0-3.82 1.79-3.82 4 0 .49.08.96.23 1.4A4.13 4.13 0 0 0 1.5 12.5c0 1.5.8 2.8 1.97 3.52-.04.24-.06.48-.06.73 0 2.21 1.71 4 3.82 4 .47 0 .92-.09 1.34-.25.62 1.32 1.88 2.2 3.39 2.2s2.77-.88 3.39-2.2c.42.16.87.25 1.34.25 2.11 0 3.82-1.79 3.82-4 0-.25-.02-.49-.06-.73a4.1 4.1 0 0 0 1.97-3.52zm-6.39-3.89-5.2 7.8a.75.75 0 0 1-1.15.12L6.8 13.6a.75.75 0 1 1 1.06-1.06l2.33 2.33 4.67-7a.75.75 0 0 1 1.25.83z"/></svg>
+          </h1>
+          <p class="hero__roles" id="roles">Étudiant Epitech · Créateur de REKA · Paris</p>
+          <div class="hero__socials" id="socials"></div>
+        </div>
+      </div>
+
+      <h2 class="hero__title">Je code, je crée &amp; <span class="accent">j'optimise.</span></h2>
+      <p class="hero__bio" id="bio">Étudiant à <strong>Epitech</strong> à Paris, je développe <strong>REKA</strong>, une console de mixage tout-en-un pour Windows, et toute une suite d'outils autour : barre des tâches, site d'aide, habillage de Voicemeeter. Je code surtout en <strong>Python</strong>, <strong>C</strong> et <strong>C#</strong>.</p>
+      <a class="btn" id="cta" href="#reka">Découvrir REKA <span aria-hidden="true">›</span></a>
+
+      <div class="stats">
+        <div class="stat"><b id="stat-repos">–</b><span>Repos publics</span></div>
+        <div class="stat"><b id="stat-stars">–</b><span>Étoiles reçues</span></div>
+        <div class="stat"><b id="stat-downloads">–</b><span>Téléchargements REKA</span></div>
+      </div>
+    </section>
+
+    <!-- REKA SUITE -->
+    <section id="reka" class="reveal">
+      <div class="section-head">
+        <h2>Suite REKA</h2>
+        <a class="more" href="https://reka.help/" target="_blank" rel="noopener">reka.help ›</a>
+      </div>
+
+      <article class="reka-hero">
+        <img class="reka-hero__shot" src="assets/reka-console.webp" alt="La console REKA : strips, effets VST, routing, faders et Master" loading="lazy">
+        <div class="reka-hero__body">
+          <img class="reka-hero__mark" src="assets/reka-mark.webp" alt="Logo REKA" width="162" height="81">
+          <p class="eyebrow">Application Windows · Python <span id="reka-version"></span></p>
+          <h3>La console de mixage tout-en-un pour Windows</h3>
+          <p>Voicemeeter pour le son, tes plugins VST pour les effets, une seule fenêtre pour tout piloter : faders, VU-mètres, routing en un clic, volume par application et micro synchronisé avec Discord.</p>
+          <ul class="tags">
+            <li>Voicemeeter Potato / Banana</li><li>VST2 · VST3 · CLAP</li><li>Discord Rich Presence</li><li>12 thèmes</li><li>Mises à jour auto</li>
+          </ul>
+          <div class="reka-hero__actions">
+            <a class="btn btn--reka" href="https://github.com/1337133713377/reka/releases/latest/download/REKA.exe">Télécharger REKA.exe</a>
+            <a class="btn btn--ghost" href="https://github.com/1337133713377/reka" target="_blank" rel="noopener">Code ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="reka-grid">
+        <article class="project reka-card">
+          <div class="reka-card__media reka-card__media--bar"><img src="assets/reka-taskbar.webp" alt="La barre REKA Taskbar" loading="lazy"></div>
+          <h3>REKA Taskbar</h3>
+          <div class="project__meta"><span><span class="dot" style="background:#3572A5"></span>Python</span></div>
+          <p>Barre des tâches pour Windows 10 / 11 reliée à REKA : canaux et mini-console, micro, casque, musique en cours, météo, système.</p>
+          <div class="project__links">
+            <a href="https://github.com/1337133713377/Rekataskbar" target="_blank" rel="noopener">Code ↗</a>
+            <a href="https://github.com/1337133713377/Rekataskbar/releases/latest" target="_blank" rel="noopener">Télécharger ↗</a>
+          </div>
+        </article>
+        <article class="project reka-card">
+          <div class="reka-card__media"><img src="assets/reka-help.webp" alt="Aperçu du site reka.help" loading="lazy"></div>
+          <h3>reka.help</h3>
+          <div class="project__meta"><span><span class="dot" style="background:#e34c26"></span>HTML · CSS · JS</span></div>
+          <p>Site de présentation et centre d'aide de REKA : bilingue, recherche, mini-console interactive et micro 3D en three.js.</p>
+          <div class="project__links">
+            <a href="https://github.com/1337133713377/reka.help" target="_blank" rel="noopener">Code ↗</a>
+            <a href="https://reka.help/" target="_blank" rel="noopener">Voir le site ↗</a>
+          </div>
+        </article>
+        <article class="project reka-card">
+          <div class="reka-card__media reka-card__media--vm" aria-hidden="true"><span>VoicemeeterBG</span></div>
+          <h3>VoicemeeterBG</h3>
+          <div class="project__meta"><span><span class="dot" style="background:#178600"></span>C#</span></div>
+          <p>Ajoute une image de fond à toutes les fenêtres Voicemeeter, via un calque transparent qui laisse passer les clics. Rien n'est modifié dans Voicemeeter.</p>
+          <div class="project__links">
+            <a href="https://github.com/1337133713377/voicemeeterBG" target="_blank" rel="noopener">Code ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="reveal">
+      <div class="section-head">
+        <h2>Autres projets</h2>
+        <a class="more" id="all-repos" href="#">Tout voir ›</a>
+      </div>
+      <div class="projects" id="project-list"><p class="muted">Chargement des projets…</p></div>
+    </section>
+
+    <!-- STACK -->
+    <section id="stack" class="reveal">
+      <div class="section-head"><h2>Technologies</h2></div>
+      <div class="marquee" id="marquee"></div>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section id="activity" class="reveal">
+      <div class="section-head"><h2>Activité GitHub</h2></div>
+      <div class="activity">
+        <div class="activity__scroll">
+          <div class="cal">
+            <div class="cal__months" id="months"></div>
+            <div class="cal__days" aria-hidden="true"><span></span><span>Lun</span><span></span><span>Mer</span><span></span><span>Ven</span><span></span></div>
+            <div class="graph" id="graph"></div>
+          </div>
+        </div>
+        <div class="activity__foot">
+          <a class="muted" id="contrib-total" target="_blank" rel="noopener"></a>
+          <div class="legend muted" aria-hidden="true">Moins <i></i><i data-l="1"></i><i data-l="2"></i><i data-l="3"></i><i data-l="4"></i> Plus</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact reveal">
+      <h2>Travaillons ensemble.</h2>
+      <p>Je suis disponible pour des projets freelance, des stages et des collaborations. Un projet en tête, une idée à concrétiser ? Écris-moi.</p>
+      <div class="contact__actions" id="contact-actions"></div>
+    </section>
+  </main>
+
+  <footer class="wrap footer muted">© <span id="year"></span> Julien ROULLET</footer>
+
+  <a class="fab" href="#contact">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+    Me contacter
+  </a>
+
+  <script src="main.js"></script>
+</body>
+</html>
