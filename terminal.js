@@ -25,12 +25,13 @@
   const go = (sel) => { close(); document.querySelector(sel)?.scrollIntoView({ behavior: 'smooth' }); };
 
   const cmds = {
-    help: () => print('Commandes : about, reka, projects, stack, contact, github, theme, clear, exit'),
+    help: () => print('Commandes : about, reka, projects, stack, reseau, contact, github, theme, clear, exit'),
     about: () => print('Julien ROULLET, étudiant à Epitech (Paris). Je développe REKA, une console de mixage pour Windows. Python, C, C#.'),
     whoami: () => print('visiteur (mais bienvenue !)'),
     reka: () => go('#reka'),
     projects: () => go('#projects'),
     stack: () => go('#stack'),
+    reseau: () => go('#network'),
     contact: () => go('#contact'),
     github: () => { print('Ouverture de GitHub…'); window.open(GH, '_blank', 'noopener'); },
     theme: () => { document.querySelector('#theme-toggle')?.click(); print('Thème changé.'); },

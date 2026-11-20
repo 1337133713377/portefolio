@@ -3,6 +3,11 @@ const GITHUB_USER = '1337133713377';
 // Dépôts présentés à la main dans la section « Suite REKA » : exclus de « Autres projets ».
 const REKA_REPOS = ['reka', 'Rekataskbar', 'reka.help', 'voicemeeterBG'];
 // Outils affichés dans « Technologies » en plus des langages détectés sur GitHub.
+// Personnes affichées dans « Réseau » : pseudo GitHub, prénom affiché, lien avec toi
+// et, si tu veux, une courte bio (sinon celle de leur profil GitHub est utilisée).
+const NETWORK = [
+  { login: 'Underspace1', name: 'Mikael', role: 'Collaborateur' },
+];
 const EXTRA_TECH = ['Windows API', 'Voicemeeter API', 'VST2 / VST3 / CLAP', 'REAPER', 'Discord RPC', 'three.js', 'Git', 'GitHub Actions', 'Linux'];
 
 const $ = (s) => document.querySelector(s);
@@ -101,7 +106,13 @@ const icon = (name, href, label) => {
 // Sans compte, l'API GitHub limite chaque visiteur à 60 requêtes par heure (3 par visite ici).
 // Les réponses sont donc gardées 1 h dans le navigateur, et réutilisées si GitHub refuse.
 const CACHE_TTL = 60 * 60 * 1000;
-async function getJSON(url) {
+// Une même URL demandée par deux sections ne part qu'une fois.
+const inflight = new Map();
+function getJSON(url) {
+  if (!inflight.has(url)) inflight.set(url, fetchJSON(url));
+  return inflight.get(url);
+}
+async function fetchJSON(url) {
   const key = 'gh-cache:' + url;
   let cached = null;
   try { cached = JSON.parse(localStorage.getItem(key)); } catch (e) {}
@@ -249,7 +260,58 @@ async function loadContributions() {
   }
 }
 
+/* ---------- Réseau ---------- */
+const ghApi = (login) => `https://api.github.com/users/${encodeURIComponent(login)}`;
+const contribApi = (login) => `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(login)}?y=last`;
+
+function personCard({ login, name, bio, avatar, me }) {
+  const url = `https://github.com/${encodeURIComponent(login)}`;
+  const labels = { repos: 'Dépôts publics', stars: 'Étoiles', followers: 'Abonnés', contribs: 'Contributions sur 1\u00a0an' };
+  const nums = {};
+  const stats = Object.entries(labels).map(([k, label]) =>
+    el('div', { className: 'person__stat' }, (nums[k] = el('b', { textContent: '–' })), el('span', { textContent: label })));
+  const bioEl = el('p', { className: 'person__bio', textContent: bio || '' });
+  const cta = el('a', { className: 'btn btn--ghost person__cta', href: url, target: '_blank', rel: 'noopener' });
+  cta.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">${ICONS.github}</svg>Voir le profil <span aria-hidden="true">›</span>`;
+  const card = el('article', { className: 'person' + (me ? ' person--me' : '') },
+    el('a', { className: 'person__avatar', href: url, target: '_blank', rel: 'noopener', tabIndex: -1 },
+      el('img', { src: avatar || `https://github.com/${encodeURIComponent(login)}.png?size=200`, alt: `Avatar de ${name}`, width: 88, height: 88, loading: 'lazy' })),
+    el('h3', { textContent: name }),
+    el('a', { className: 'person__login', href: url, target: '_blank', rel: 'noopener', textContent: '@' + login }),
+    bioEl,
+    el('div', { className: 'person__stats' }, ...stats),
+    cta);
+  fillPerson(login, nums, bio ? null : bioEl);
+  return card;
+}
+
+async function fillPerson(login, nums, bioEl) {
+  const [user, repos, contrib] = await Promise.allSettled([
+    getJSON(ghApi(login)), getJSON(ghApi(login) + '/repos?per_page=100&sort=pushed'), getJSON(contribApi(login)),
+  ]);
+  const fr = (n) => n.toLocaleString('fr-FR');
+  if (user.status === 'fulfilled') {
+    nums.repos.textContent = fr(user.value.public_repos);
+    nums.followers.textContent = fr(user.value.followers);
+    if (bioEl && user.value.bio) bioEl.textContent = user.value.bio;
+  }
+  if (repos.status === 'fulfilled') nums.stars.textContent = fr(repos.value.filter((r) => !r.fork).reduce((s, r) => s + r.stargazers_count, 0));
+  if (contrib.status === 'fulfilled') nums.contribs.textContent = fr(contrib.value.total.lastYear);
+}
+
+function loadNetwork() {
+  if (!NETWORK.length) { $('#network').hidden = true; return; }
+  const me = personCard({ login: GITHUB_USER, name: 'Julien ROULLET', bio: 'Étudiant Epitech · Créateur de REKA', avatar: 'assets/avatar.webp', me: true });
+  me.style.gridRow = `1 / span ${NETWORK.length}`;
+  const rows = NETWORK.flatMap((p) => [
+    el('div', { className: 'network__link' }, el('span', { className: 'network__line', ariaHidden: 'true' }), el('span', { className: 'network__role', textContent: p.role })),
+    personCard(p),
+  ]);
+  $('#network-list').replaceChildren(me, ...rows);
+}
+
 $('#year').textContent = new Date().getFullYear();
 loadGitHub();
 loadRekaRelease();
 loadContributions();
+loadNetwork();
